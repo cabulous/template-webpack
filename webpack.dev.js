@@ -9,12 +9,6 @@ const devConfig = {
     filename: '[name].source.js',
   },
   mode: 'development',
-  watch: true,
-  watchOptions: {
-    ignored: /node_modules/,
-    aggregateTimeout: 300,
-    poll: 1000,
-  },
   plugins: [
     new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -25,6 +19,7 @@ const devConfig = {
   ],
   devServer: {
     contentBase: path.join(__dirname, 'templates'),
+    host: '127.0.0.1',
     hot: true,
     index: 'index.html',
     filename: '[name].source.js',
