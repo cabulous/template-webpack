@@ -11,11 +11,11 @@ const stagingConfig = {
   plugins: [
     new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development',
+      NODE_ENV: 'staging',
       DEBUG: true,
     }),
   ],
-  devtool: 'inline-source-map',
+  devtool: 'cheap-source-map',
 };
 
 module.exports = merge(baseConfig, stagingConfig);

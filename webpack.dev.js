@@ -11,6 +11,10 @@ const devConfig = {
   mode: 'development',
   plugins: [
     new CleanWebpackPlugin(),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      DEBUG: true,
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'template title',
