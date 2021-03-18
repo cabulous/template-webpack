@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.base');
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
@@ -9,6 +10,10 @@ const statsConfig = {
   },
   mode: 'production',
   plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'production',
+      DEBUG: false,
+    }),
     new BundleAnalyzerPlugin(),
   ],
 };

@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('./webpack.base');
 const devConfig = {
@@ -10,7 +9,6 @@ const devConfig = {
   },
   mode: 'development',
   plugins: [
-    new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
       DEBUG: true,
