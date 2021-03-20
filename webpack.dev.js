@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('./webpack.base');
 const devConfig = {
   output: {
-    filename: '[name].source.js',
+    filename: '[name].dev.js',
   },
   mode: 'development',
   plugins: [
@@ -24,7 +24,7 @@ const devConfig = {
     host: '127.0.0.1',
     hot: true,
     index: 'index.html',
-    filename: '[name].source.js',
+    filename: '[name].dev.js',
     stats: 'errors-warnings',
   },
   devtool: 'source-map',

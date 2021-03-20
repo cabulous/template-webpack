@@ -4,9 +4,9 @@ const baseConfig = require('./webpack.base');
 
 const stagingConfig = {
   output: {
-    filename: '[name].js',
+    filename: '[name].staging.js',
   },
-  mode: 'production',
+  mode: 'development',
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'staging',
