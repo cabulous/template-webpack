@@ -2,7 +2,7 @@
 // String utils
 // ==========================================================================
 
-import is from "./is";
+import is from './is';
 
 // Generate a random ID
 export function generateId(prefix) {
@@ -20,7 +20,8 @@ export function format(input, ...args) {
 
 // Get percentage
 export function getPercentage(current, max) {
-    if (current === 0 || max === 0 || Number.isNaN(current) || Number.isNaN(max)) {
+    if (current === 0 || max === 0 || Number.isNaN(current) ||
+      Number.isNaN(max)) {
         return 0;
     }
 
@@ -30,14 +31,17 @@ export function getPercentage(current, max) {
 // Replace all occurrences of a string in a string
 export function replaceAll(input = '', find = '', replace = '') {
     return input.replace(
-        new RegExp(find.toString().replace(/([.*+?^=!:${}()|[\]/\\])/g, '\\$1'), 'g'),
-        replace.toString(),
+      new RegExp(find.toString().replace(/([.*+?^=!:${}()|[\]/\\])/g, '\\$1'),
+        'g'),
+      replace.toString(),
     );
 }
 
 // Convert to title case
 export function toTitleCase(input = '') {
-    return input.toString().replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase());
+    return input.toString()
+      .replace(/\w\S*/g,
+        text => text.charAt(0).toUpperCase() + text.substr(1).toLowerCase());
 }
 
 // Convert string to pascalCase
@@ -92,4 +96,44 @@ export function getHTML(element) {
     const wrapper = document.createElement('div');
     wrapper.appendChild(element);
     return wrapper.innerHTML;
+}
+
+/**
+ * Encode the HTML entities like "&amp;"
+ * @param {string} str
+ * @return {string}
+ */
+export function encodeHtmlEntities(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+}
+
+/**
+ * @param {string} hex
+ * @return {string}
+ */
+export function hexToRgbA(hex) {
+    let c;
+    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+        c = hex.substring(1).split('');
+        if (c.length === 3) {
+            c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c = '0x' + c.join('');
+        return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') +
+          ',1)';
+    }
+    throw new Error(`expect a hex but got ${hex}`);
+}
+
+export function componentToHex(c) {
+    const hex = c.toString(16);
+    return hex.length === 1 ? `0${hex}` : hex;
+}
+
+export function rgbToHex(r, g, b) {
+    return `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`;
 }
