@@ -281,7 +281,7 @@ export function hasChild(container, selector) {
 }
 
 /**
- * @param {HTMLElement} element
+ * @param {HTMLElement | Node} element
  * @param {string} selector
  * @return {boolean}
  */
@@ -335,8 +335,7 @@ export function hasBkgImage(element) {
   if (!is.element(element)) {
     throw new Error(`expect an element but got ${typeof element}`);
   }
-  const computedStyle = getComputedStyle(element);
-  const backgroundImage = computedStyle.backgroundImage;
+  const { backgroundImage } = getComputedStyle(element);
   return backgroundImage !== 'none';
 }
 
