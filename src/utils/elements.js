@@ -262,6 +262,84 @@ export function getClosestElement(targetElement, selectors) {
   return targetElement.closest(selectors);
 }
 
+/**
+ * @param {HTMLElement} targetElement
+ * @param {string} selectors
+ * @return {boolean}
+ */
+export function hasClosestElement(targetElement, selectors) {
+  return !is.nullOrUndefined(getClosestElement(targetElement, selectors));
+}
+
+/**
+ * @param {HTMLElement} container
+ * @param {string} selector
+ * @return {boolean}
+ */
+export function hasChild(container, selector) {
+  return !is.nullOrUndefined(container.querySelector(selector));
+}
+
+/**
+ * @param {HTMLElement} element
+ * @param {string} selector
+ * @return {boolean}
+ */
+export function hasDirectChild(element, selector) {
+  if (is.nullOrUndefined(element) || !is.element(element)) {
+    throw new Error(`expect an element but got ${typeof element}`);
+  }
+
+  const kids = element.childNodes;
+
+  if (is.nullOrUndefined(kids) || is.empty(kids)) {
+    return false;
+  }
+
+  /**
+   * @type {ChildNode[]}
+   */
+  const res = Array.from(kids).filter((kid) => {
+    if (is.element(kid)) {
+      return kid.matches(selector);
+    }
+  });
+
+  return !is.empty(res);
+}
+
+/**
+ * @param {HTMLElement} element
+ * @param {string} selector
+ * @return {boolean}
+ */
+export function hasSibling(element, selector) {
+  if (is.nullOrUndefined(element) || !is.element(element)) {
+    throw new Error(`expect an element but got ${typeof element}`);
+  }
+
+  const parent = element.parentNode;
+
+  if (is.nullOrUndefined(parent)) {
+    return false
+  }
+
+  return hasDirectChild(parent, selector);
+}
+
+/**
+ * @param {HTMLElement} element
+ * @return {boolean}
+ */
+export function hasBkgImage(element) {
+  if (!is.element(element)) {
+    throw new Error(`expect an element but got ${typeof element}`);
+  }
+  const computedStyle = getComputedStyle(element);
+  const backgroundImage = computedStyle.backgroundImage;
+  return backgroundImage !== 'none';
+}
+
 // Trap focus inside container
 export function trapFocus(element = null, toggle = false) {
   if (!is.element(element)) {
