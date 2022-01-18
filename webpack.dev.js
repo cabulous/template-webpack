@@ -8,6 +8,7 @@ const devConfig = {
     filename: '[name].dev.js',
   },
   mode: 'development',
+  target: 'web',
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
@@ -20,14 +21,17 @@ const devConfig = {
     }),
   ],
   devServer: {
-    contentBase: path.join(__dirname, 'templates'),
-    host: '127.0.0.1',
+    static: {
+      directory: path.join(__dirname, 'templates'),
+    },
     hot: true,
-    index: 'index.html',
-    filename: '[name].dev.js',
-    stats: 'errors-warnings',
+    open: {
+      app: {
+        name: 'Google Chrome Canary',
+      },
+    },
   },
-  devtool: 'source-map',
+  devtool: 'cheap-source-map',
 };
 
 module.exports = merge(baseConfig, devConfig);

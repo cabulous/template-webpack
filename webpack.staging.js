@@ -6,14 +6,14 @@ const stagingConfig = {
   output: {
     filename: '[name].staging.js',
   },
-  mode: 'development',
+  mode: 'production',
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'staging',
       DEBUG: true,
     }),
   ],
-  devtool: 'cheap-source-map',
+  stats: 'errors-only',
 };
 
 module.exports = merge(baseConfig, stagingConfig);

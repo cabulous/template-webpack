@@ -3,17 +3,17 @@ const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
 const smp = new SpeedMeasureWebpackPlugin();
 const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.base');
-const prodConfig = {
+const debugConfig = {
   output: {
-    filename: '[name].min.js',
+    filename: '[name].debug.js',
   },
   mode: 'production',
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
-      DEBUG: false,
+      DEBUG: true,
     }),
   ],
 };
 
-module.exports = smp.wrap(merge(baseConfig, prodConfig));
+module.exports = smp.wrap(merge(baseConfig, debugConfig));
