@@ -1,7 +1,7 @@
 import Logger from '../components/logger';
 import is from './is';
 
-const LOGGER_NAME = 'FileTranslatorLogger';
+const LOGGER_NAME = 'YourLoggerName';
 
 /**
  * @return {Logger}
