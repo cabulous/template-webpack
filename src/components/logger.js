@@ -5,7 +5,7 @@ const LOG_PREFIX = '[App Name]';
 const LOGGER_NAME = 'YourLoggerName';
 const noop = () => {};
 
-export class Logger {
+class Logger {
   constructor() {
     this.enabled = window.console && isDebugOn();
   }
