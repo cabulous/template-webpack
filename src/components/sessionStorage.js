@@ -1,6 +1,6 @@
 import { merge } from 'lodash';
 
-import { getLogger } from '../utils/getLogger';
+import { getLogger } from './logger';
 import is from '../utils/is';
 
 class SessionStorage {

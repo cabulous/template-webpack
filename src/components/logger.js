@@ -1,9 +1,11 @@
 import { isDebugOn } from '../settings/env';
+import is from '../utils/is';
 
 const LOG_PREFIX = '[App Name]';
+const LOGGER_NAME = 'YourLoggerName';
 const noop = () => {};
 
-class Logger {
+export class Logger {
   constructor() {
     this.enabled = window.console && isDebugOn();
   }
@@ -30,4 +32,19 @@ class Logger {
   }
 }
 
-export default Logger;
+/**
+ * @return {Logger}
+ */
+export function getLogger() {
+  let logger = window[LOGGER_NAME];
+
+  if (!is.nullOrUndefined(logger)) {
+    return logger;
+  }
+
+  logger = new Logger();
+  window[LOGGER_NAME] = logger;
+
+  return logger;
+}
+

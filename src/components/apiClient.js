@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { getApiBaseUri } from '../settings/apis';
-import { getLogger } from '../utils/getLogger';
+import { getLogger } from './logger';
 
 const logger = getLogger();
 

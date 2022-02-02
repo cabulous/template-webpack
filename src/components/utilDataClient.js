@@ -1,4 +1,4 @@
-import { getLogger } from '../utils/getLogger';
+import { getLogger } from './logger';
 import SessionStorage from './sessionStorage';
 
 const SESSION_STORAGE_KEY = 'util-storage';
