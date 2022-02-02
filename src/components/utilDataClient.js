@@ -1,7 +1,9 @@
 import { getLogger } from './logger';
 import SessionStorage from './sessionStorage';
+import is from '../utils/is';
 
 const SESSION_STORAGE_KEY = 'util-storage';
+const KEY = 'UtilData';
 const dataKeyConstants = {
   PREVIOUS_PAGE: 'previous_page',
 };
@@ -53,4 +55,16 @@ class UtilDataClient {
 
 }
 
-export default UtilDataClient;
+export function getUtilDataClient() {
+  let client = window[KEY];
+
+  if (!is.nullOrUndefined(client)) {
+    return client;
+  }
+
+  client = new UtilDataClient();
+  window[KEY] = client;
+
+  return client;
+}
+
