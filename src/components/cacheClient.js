@@ -3,7 +3,7 @@ import SessionStorage from './sessionStorage';
 import is from '../utils/is';
 
 const SESSION_STORAGE_KEY = 'session-storage';
-const CACHE_NAME = 'FileTranslatorCache';
+const CACHE_NAME = 'cache';
 
 class CacheClient {
   constructor() {
