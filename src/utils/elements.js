@@ -1,6 +1,5 @@
 import is from './is';
 
-// Set attributes
 export function setAttributes(element, attributes) {
   if (!is.element(element) || is.empty(attributes)) {
     return;
