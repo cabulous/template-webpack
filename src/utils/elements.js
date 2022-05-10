@@ -377,3 +377,37 @@ export function disable(element) {
 
   return true;
 }
+
+/**
+ * @param {string} selector
+ * @param {function} onSuccess
+ */
+export function observeNode(selector, onSuccess) {
+  if (is.nullOrUndefined(selector) || !is.string(selector)) {
+    return;
+  }
+
+  const targetNode = document.querySelector(selector);
+  const config = { childList: true };
+  const isFunction = is.function(onSuccess);
+
+  if (is.nullOrUndefined(targetNode)) {
+    return;
+  }
+
+  const callback = (mutationsList) => {
+    for (let i = 0; i < mutationsList.length; i += 1) {
+      if (mutationsList[i].type === 'childList') {
+        if (isFunction) {
+          onSuccess();
+        }
+      }
+    }
+  };
+
+  // Create an observer instance linked to the callback function
+  const observer = new MutationObserver(callback);
+
+  // Start observing the target node for configured mutations
+  observer.observe(targetNode, config);
+}

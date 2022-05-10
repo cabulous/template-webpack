@@ -79,3 +79,19 @@ export function once(
   toggleListener.call(this, element, events, onceCallback, true, passive,
     capture);
 }
+
+export function triggerEvent(element, type = '', bubbles = false, detail = {}) {
+  // Bail if no element
+  if (!is.element(element) || is.empty(type)) {
+    return;
+  }
+
+  // Create and dispatch the event
+  const event = new CustomEvent(type, {
+    bubbles,
+    detail: { ...detail },
+  });
+
+  // Dispatch the event
+  element.dispatchEvent(event);
+}
