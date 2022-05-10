@@ -9,7 +9,7 @@
     "start:float": "webpack serve --config webpack.dev.float.js",
     "build": "webpack --config webpack.prod.js",
     "build:staging": "webpack --config webpack.staging.js",
-    "build:debug": "webpack --config webpack.prodDebug.js"
+    "build:debug": "webpack --config webpack.debug.js"
   },
   "keywords": [],
   "author": "Carson",
