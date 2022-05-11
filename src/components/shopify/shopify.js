@@ -2,7 +2,10 @@ import is from '../../utils/is';
 
 class Shopify {
 
-  static getShopDomain() {
+  /**
+   * @returns {string}
+   */
+  static shopDomain() {
     if (!is.empty(window.Shopify?.shop)) {
       return window.Shopify.shop;
     }
@@ -10,19 +13,21 @@ class Shopify {
     return document.domain;
   }
 
-  static getProductId() {
+  /**
+   * @returns {number}
+   */
+  static productId() {
     if (is.empty(window.meta?.product?.id)) {
-      return null;
+      return -1;
     }
     return window.meta.product.id;
   }
 
   /**
-   * Get locale from a pathname
    * @param {string} [aPath]
-   * @return {null|string}
+   * @return {string}
    */
-  static getLocale(aPath) {
+  static languageInPathname(aPath) {
     const path = aPath || window.location.pathname;
     let pathParts = path.split('/');
     pathParts = pathParts.splice(1, pathParts.length);
@@ -33,7 +38,7 @@ class Shopify {
       pathParts[0].match(localeRegexCase2);
 
     if (locale === null) {
-      return null;
+      return '';
     }
 
     return locale[0];
@@ -41,7 +46,7 @@ class Shopify {
 
   static isHomepage(aPath) {
     const path = aPath || window.location.pathname;
-    const locale = Shopify.getLocale(path);
+    const locale = Shopify.languageInPathname(path);
 
     return path === '/' || path === `/${locale}` || path === `/${locale}/`;
   }
@@ -51,7 +56,7 @@ class Shopify {
    * @param {string} language
    * @return {string|null}
    */
-  static mapBrowserLanguageToShopifyLocale(language) {
+  static mapBrowserLanguageToShopifyLanguage(language) {
     switch (language) {
       case 'zh-HK':
         return 'zh-TW';
@@ -80,7 +85,7 @@ class Shopify {
   /**
    * @return {string}
    */
-  static getCurrentRegion() {
+  static currentRegion() {
     if (!is.string(window.Shopify?.country)) {
       return '';
     }
@@ -90,11 +95,31 @@ class Shopify {
   /**
    * @return {string}
    */
-  static getCurrentLanguage() {
+  static currentLanguage() {
     if (!is.string(window.Shopify?.locale)) {
       return '';
     }
     return window.Shopify.locale;
+  }
+
+  /**
+   * Get pathname with search excluding locale
+   * @return {string}
+   */
+  static pathnameWithSearch() {
+    const { pathname, search = '' } = window.location;
+    if (is.nullOrUndefined(pathname)) {
+      throw new Error(`Expect a pathname but got ${pathname}`);
+    }
+    const locale = Shopify.languageInPathname(pathname);
+    if (is.empty(locale)) {
+      return pathname + search;
+    }
+    if (pathname === `/${locale}`) {
+      return '/';
+    }
+
+    return pathname.replace(`/${locale}`, '') + search;
   }
 
 }
