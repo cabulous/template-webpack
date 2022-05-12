@@ -77,10 +77,10 @@ class Time {
   /**
    * @param {number} maxAge
    * @param {number|string} timestamp
+   * @param {number} now
    * @return {boolean}
    */
-  static isExpired(maxAge, timestamp) {
-    const now = +new Date();
+  static isExpired(maxAge, timestamp, now) {
     let aTimestamp = timestamp;
 
     if (is.string(timestamp)) {

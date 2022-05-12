@@ -35,4 +35,12 @@ describe('time utils', () => {
     expect(Time.addLeadingZeros(6, 3)).toBe('006');
   });
 
+  test('is expired', () => {
+    expect(Time.isExpired(1000, 4000, 5000)).toBeTruthy();
+  });
+
+  test('is not expired', () => {
+    expect(Time.isExpired(1000, 4000, 4999)).toBeFalsy();
+  });
+
 });
