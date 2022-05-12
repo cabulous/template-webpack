@@ -3,7 +3,6 @@ import is from '../is';
 class Time {
 
   /**
-   * Time helpers - get hours from a value in seconds
    * @param {number} seconds
    * @return {number}
    */
@@ -12,12 +11,11 @@ class Time {
   }
 
   /**
-   * Time helpers - get minutes from a value in seconds
-   * @param {number} value
+   * @param {number} seconds
    * @return {number}
    */
-  static getMinutes(value) {
-    return Math.trunc((value / 60) % 60);
+  static minutes(seconds) {
+    return Math.trunc((seconds / 60) % 60);
   }
 
   /**
