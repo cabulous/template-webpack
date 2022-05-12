@@ -6,7 +6,7 @@ class Time {
    * @param {number} seconds
    * @return {number}
    */
-  static hours(seconds) {
+  static remainingHours(seconds) {
     return Math.trunc((seconds / 60 / 60) % 60);
   }
 
@@ -14,17 +14,16 @@ class Time {
    * @param {number} seconds
    * @return {number}
    */
-  static minutes(seconds) {
+  static remainingMinutes(seconds) {
     return Math.trunc((seconds / 60) % 60);
   }
 
   /**
-   * Time helpers - get seconds from a value in seconds
-   * @param {number} value
+   * @param {number} seconds
    * @return {number}
    */
-  static getSeconds(value) {
-    return Math.trunc(value % 60);
+  static remainingSeconds(seconds) {
+    return Math.trunc(seconds % 60);
   }
 
   /**
@@ -43,7 +42,7 @@ class Time {
     // Format time component to add leading zero
     const format = value => `0${value}`.slice(-2);
     // Breakdown to hours, mins, secs
-    let hours = Time.hours(time);
+    let hours = Time.remainingHours(time);
     const mins = Time.getMinutes(time);
     const secs = Time.getSeconds(time);
 
