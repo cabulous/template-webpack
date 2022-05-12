@@ -77,7 +77,7 @@ class Time {
   /**
    * @param {number} maxAge
    * @param {number|string} timestamp
-   * @param {number} now
+   * @param {Date} now
    * @return {boolean}
    */
   static isExpired(maxAge, timestamp, now) {
@@ -87,7 +87,14 @@ class Time {
       aTimestamp = parseInt(timestamp, 10);
     }
 
-    return now - aTimestamp >= maxAge;
+    return now.getTime() - aTimestamp >= maxAge;
+  }
+
+  /**
+   * @returns {Date}
+   */
+  static now() {
+    return new Date();
   }
 
   /**

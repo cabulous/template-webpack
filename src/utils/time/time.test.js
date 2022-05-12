@@ -36,11 +36,13 @@ describe('time utils', () => {
   });
 
   test('is expired', () => {
-    expect(Time.isExpired(1000, 4000, 5000)).toBeTruthy();
+    const now = new Date(5000);
+    expect(Time.isExpired(1000, 4000, now)).toBeTruthy();
   });
 
   test('is not expired', () => {
-    expect(Time.isExpired(1000, 4000, 4999)).toBeFalsy();
+    const now = new Date(4999);
+    expect(Time.isExpired(1000, 4000, now)).toBeFalsy();
   });
 
 });
