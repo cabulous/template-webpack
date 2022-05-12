@@ -102,19 +102,59 @@ class Time {
   }
 
   /**
-   * @param {CallableFunction} conditionFn
-   * @param {number} [interval]
-   * @param {number} [maxTry]
+   * @callback WaitConditionFn
+   * @return {boolean}
+   */
+
+  /**
+   * @param {WaitConditionFn} conditionFn
    * @return {Promise<boolean>}
    */
-  static async waitForReady(conditionFn, interval = 100, maxTry = 50) {
+  static async waitUntil(conditionFn) {
     let isReady = conditionFn();
 
     if (isReady) {
       return true;
     }
 
-    for (let i = 0; i < maxTry; i += 1) {
+    const maxCnt = 50;
+
+    for (let i = 0; i < maxCnt; i += 1) {
+      if (isReady) {
+        break;
+      }
+
+      // eslint-disable-next-line no-await-in-loop
+      await Time.wait(100);
+      isReady = conditionFn();
+    }
+
+    return isReady;
+  }
+
+  /**
+   * @callback UntilConditionFn
+   * @return {boolean|Promise<boolean>}
+   */
+
+  /**
+   * @param {UntilConditionFn} conditionFn
+   * @param {number} tryMax
+   * @param {number} interval
+   * @return {Promise<boolean>}
+   */
+  static async waitUntilPromise(
+    conditionFn,
+    interval = 100,
+    tryMax = 50,
+  ) {
+    let isReady = await conditionFn();
+
+    if (isReady) {
+      return true;
+    }
+
+    for (let i = 0; i < tryMax; i += 1) {
       if (isReady) {
         break;
       }
