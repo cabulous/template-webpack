@@ -75,19 +75,19 @@ class Time {
   }
 
   /**
-   * @param {number} maxAge
-   * @param {number|string} timestamp
+   * @param {number} maxAgeMils
+   * @param {number|string} timestampMils
    * @param {Date} now
    * @return {boolean}
    */
-  static isExpired(maxAge, timestamp, now) {
-    let aTimestamp = timestamp;
+  static isExpired(maxAgeMils, timestampMils, now) {
+    let aTimestamp = timestampMils;
 
-    if (is.string(timestamp)) {
-      aTimestamp = parseInt(timestamp, 10);
+    if (is.string(timestampMils)) {
+      aTimestamp = parseInt(timestampMils, 10);
     }
 
-    return now.getTime() - aTimestamp >= maxAge;
+    return now.getTime() - aTimestamp >= maxAgeMils;
   }
 
   /**
