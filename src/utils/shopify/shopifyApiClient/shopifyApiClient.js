@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { getLogger } from '../../logger';
+import { getLogger } from '../../../components/logger';
 
 const logger = getLogger();
 

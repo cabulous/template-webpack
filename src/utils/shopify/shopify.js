@@ -1,4 +1,4 @@
-import is from '../../utils/is';
+import is from '../is';
 
 class Shopify {
 

@@ -2,7 +2,7 @@ import {
   getPathnameWithSearch,
   getUrlEncodedData,
   redirectTo,
-} from '../../../utils/urls';
+} from '../../urls';
 import { shopifyApiConstants } from './constants';
 import shopifyApiClient from './shopifyApiClient';
 
