@@ -1,4 +1,5 @@
 import Time from './time';
+import { expect } from '@jest/globals';
 
 describe('time utils', () => {
 
@@ -24,6 +25,14 @@ describe('time utils', () => {
 
   test('format time with hours when hour is zero', () => {
     expect(Time.formatTime(999, true)).toBe('0:16:39');
+  });
+
+  test('do not add leading zeros', () => {
+    expect(Time.addLeadingZeros(66, 2)).toBe('66');
+  });
+
+  test('add leading zeros', () => {
+    expect(Time.addLeadingZeros(6, 3)).toBe('006');
   });
 
 });

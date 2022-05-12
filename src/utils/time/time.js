@@ -58,18 +58,16 @@ class Time {
   }
 
   /**
-   * Add leading zeros
    * @param {string|number} num
    * @param {number} length
    * @return {string}
    */
-  static leadingZeros(num, length) {
-    const digitLength = length || 2;
+  static addLeadingZeros(num, length = 2) {
     const digit = String(num);
-    if (digit.length > digitLength) {
+    if (digit.length > length) {
       return digit;
     }
-    return (Array(digitLength + 1).join('0') + digit).substr(-digitLength);
+    return (Array(length + 1).join('0') + digit).substr(-length);
   }
 
   /**
