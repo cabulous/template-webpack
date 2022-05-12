@@ -14,4 +14,16 @@ describe('time utils', () => {
     expect(Time.getSeconds(10000)).toBe(40);
   });
 
+  test('format time with colon separator', () => {
+    expect(Time.formatTime(10000)).toBe('2:46:40');
+  });
+
+  test('format time with inverted mark', () => {
+    expect(Time.formatTime(10000, false, true)).toBe('-2:46:40');
+  });
+
+  test('format time with hours when hour is zero', () => {
+    expect(Time.formatTime(999, true)).toBe('0:16:39');
+  });
+
 });

@@ -27,7 +27,6 @@ class Time {
   }
 
   /**
-   * Format time to UI friendly string
    * @param {number|null} time
    * @param {boolean} displayHours - whether displaying hours number
    * @param {boolean} inverted - add a '-' if inverted
