@@ -64,10 +64,14 @@ class Time {
    */
   static addLeadingZeros(num, length = 2) {
     const digit = String(num);
+
     if (digit.length > length) {
       return digit;
     }
-    return (Array(length + 1).join('0') + digit).substr(-length);
+
+    const str = Array(length + 1).join('0') + digit;
+
+    return str.substring(str.length - length);
   }
 
   /**
