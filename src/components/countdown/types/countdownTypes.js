@@ -1,10 +1,11 @@
 /**
  * @typedef {Object} CountdownOptionTypes
- * @property {number | string | Date} [date]
+ * @property {number | string | Date} date
+ * @property {TimeUnitTextTypes} [timeUnitText]
+ * @property {styleConstants} [style]
  * @property {number} [refresh]
  * @property {number} [offset]
  * @property {Function} [onEnd]
- * @property {CountdownRenderFunction} [render]
  */
 
 /**

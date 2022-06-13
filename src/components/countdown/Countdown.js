@@ -1,16 +1,15 @@
-import './styles/countdown.scss';
-
-import { createElement, emptyElement } from '../../utils/elements';
 import is from '../../utils/is';
+import { getLogger } from '../logger';
 import countdownDefaults from './types/countdownDefaults';
 
 class Countdown {
 
   /**
    * @param {HTMLElement} el - DOM node of the countdown
-   * @param {CountdownOptionTypes} [options]
+   * @param {CountdownOptionTypes} options
    */
   constructor(el, options) {
+    this.logger = getLogger();
     this.el = el;
 
     /**
@@ -25,8 +24,8 @@ class Countdown {
     this.interval = false;
 
     this.classNames = {
-      digit: 'digit',
-      separator: 'separator',
+      digit: 'countdown__grid',
+      divider: 'countdown__divider',
     };
 
     this.#mergeOptions(options);
@@ -39,39 +38,60 @@ class Countdown {
       return;
     }
 
-    this.#render();
+    this.render();
 
     if (this.options.refresh) {
       this.interval = window.setInterval(() => {
-        this.#render();
+        this.render();
       }, this.options.refresh);
     }
   };
 
   /**
-   * @param {number | string} digit
-   * @return {HTMLElement}
+   * @param {number} days
    */
-  #createDigit(digit) {
-    return createElement('span', {
-      class: this.classNames.digit,
-    }, `${digit}`);
-  };
+  getUnitDays(days) {
+    if (days >= 2) {
+      return this.options.timeUnitText.days;
+    }
+    return this.options.timeUnitText.day;
+  }
 
   /**
-   * @return {HTMLElement}
+   * @param {number} hours
    */
-  #createSeparator() {
-    return createElement('span', {
-      class: this.classNames.separator,
-    }, ':');
-  };
+  getUnitHours(hours) {
+    if (hours >= 2) {
+      return this.options.timeUnitText.hours;
+    }
+    return this.options.timeUnitText.hour;
+  }
+
+  /**
+   * @param {number} mins
+   */
+  getUnitMins(mins) {
+    if (mins >= 2) {
+      return this.options.timeUnitText.minutes;
+    }
+    return this.options.timeUnitText.minute;
+  }
+
+  /**
+   * @param {number} secs
+   */
+  getUnitSecs(secs) {
+    if (secs >= 2) {
+      return this.options.timeUnitText.seconds;
+    }
+    return this.options.timeUnitText.second;
+  }
 
   /**
    * Get the difference between now and the end date
    * @return {CountdownDiffTypes} Object with the diff information (years, days, hours, min, sec, millisec)
    */
-  #getDiffDate() {
+  getDiffDate() {
     if (typeof this.options.date !== 'object') {
       this.options.date = new Date(this.options.date);
     }
@@ -128,16 +148,16 @@ class Countdown {
   /**
    * Add leading zeros to a number
    * @param  {Number} num    Input number
-   * @param  {Number} length Length of the desired output
+   * @param  {Number} [length] Length of the desired output
    * @return {String}        String of the desired length with leading zeros
    */
-  static leadingZeros = (num, length) => {
-    const digitLength = length || 2;
+  static leadingZeros(num, length = 2) {
     const digit = String(num);
-    if (digit.length > digitLength) {
+    if (digit.length >= length) {
       return digit;
     }
-    return (Array(digitLength + 1).join('0') + digit).substr(-digitLength);
+    const str = Array(length + 1).join('0') + digit;
+    return str.substring(str.length - length);
   };
 
   /**
@@ -152,49 +172,30 @@ class Countdown {
   };
 
   /**
-   * Render the countdown
+   * @abstract
    */
-  #render() {
-    emptyElement(this.el);
+  // eslint-disable-next-line class-methods-use-this
+  render() {
+    throw new Error('Override this method in subclass');
+  };
 
-    const data = this.#getDiffDate();
-    let totalHours = 0;
-
-    if (!is.zero(data.days)) {
-      totalHours += data.days * 24;
-    }
-
-    totalHours += data.hours;
-
-    if (!is.zero(totalHours)) {
-      const hours = this.#createDigit(Countdown.leadingZeros(totalHours, 2));
-      const mins = this.#createDigit(Countdown.leadingZeros(data.min, 2));
-      const secs = this.#createDigit(Countdown.leadingZeros(data.sec, 2));
-      const separator1 = this.#createSeparator();
-      const separator2 = this.#createSeparator();
-      this.el.append(hours, separator1, mins, separator2, secs);
-
-      return;
-    }
-
-    if (!is.zero(data.min)) {
-      const mins = this.#createDigit(Countdown.leadingZeros(data.min, 2));
-      const secs = this.#createDigit(Countdown.leadingZeros(data.sec, 2));
-      const separator = this.#createSeparator();
-      this.el.append(mins, separator, secs);
-
-      return;
-    }
-
-    const secs = this.#createDigit(Countdown.leadingZeros(data.sec, 2));
-    this.el.append(secs);
+  /**
+   * Restart the countdown with new date
+   * @param {Date} newDate
+   * @return {Countdown}
+   */
+  restart(newDate) {
+    this.#update(newDate);
+    this.interval = false;
+    this.#init();
+    return this;
   };
 
   /**
    * Restart the countdown and update options
    * @param {CountdownOptionTypes} customOptions
    */
-  restart(customOptions) {
+  restartWithOptions(customOptions) {
     this.#mergeOptions(customOptions);
     this.interval = false;
     this.#init();
@@ -218,12 +219,12 @@ class Countdown {
    * @param  {Date} newDate Date object or a String/Number that can be passed to the Date constructor
    * @return {Countdown} Countdown instance
    */
-  update(newDate) {
+  #update(newDate) {
     if (typeof newDate !== 'object') {
       this.options.date = new Date(newDate);
     }
     this.options.date = newDate;
-    this.#render();
+    this.render();
     return this;
   };
 
