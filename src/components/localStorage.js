@@ -3,9 +3,17 @@ import { merge } from 'lodash';
 import { getLogger } from './logger';
 import is from '../utils/is';
 
+const TIMESTAMP_KEY = 'timestamp';
+const MAX_AGE_MILLISECONDS = 24 * 60 * 60 * 1000;
+
 class LocalStorage {
+
+  /**
+   * @param {string} key
+   */
   constructor(key) {
     this.key = key;
+    this.setTimestampIfNotPresent();
   }
 
   static get supported() {
@@ -76,6 +84,58 @@ class LocalStorage {
 
     // Update storage
     window.localStorage.setItem(this.key, JSON.stringify(storage));
+  }
+
+  /**
+   * @param {number} maxAge - in milliseconds
+   * @return {boolean}
+   */
+  isExpired(maxAge = MAX_AGE_MILLISECONDS) {
+    let timestamp = this.get(TIMESTAMP_KEY);
+    const now = +new Date();
+
+    if (is.nullOrUndefined(timestamp)) {
+      this.set({ [TIMESTAMP_KEY]: now });
+      return false;
+    }
+
+    if (is.string(timestamp)) {
+      timestamp = parseInt(timestamp, 10);
+    }
+
+    return now - timestamp >= maxAge;
+  }
+
+  /**
+   * @param {number} maxAge - in milliseconds
+   * @return {number} - in milliseconds
+   */
+  expireTime(maxAge = MAX_AGE_MILLISECONDS) {
+    let timestamp = this.get(TIMESTAMP_KEY);
+    const now = +new Date();
+
+    if (is.nullOrUndefined(timestamp)) {
+      this.set({ [TIMESTAMP_KEY]: now });
+    }
+
+    if (is.string(timestamp)) {
+      timestamp = parseInt(timestamp, 10);
+    }
+
+    return timestamp + maxAge;
+  }
+
+  refresh() {
+    window.localStorage.removeItem(this.key);
+    this.set({ [TIMESTAMP_KEY]: +new Date() });
+  }
+
+  setTimestampIfNotPresent() {
+    const timestamp = this.get(TIMESTAMP_KEY);
+
+    if (is.nullOrUndefined(timestamp)) {
+      this.set({ [TIMESTAMP_KEY]: +new Date() });
+    }
   }
 }
 
