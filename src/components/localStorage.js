@@ -130,6 +130,12 @@ class LocalStorage {
     this.set({ [TIMESTAMP_KEY]: +new Date() });
   }
 
+  cleanUp() {
+    if (this.isExpired()) {
+      this.refresh();
+    }
+  }
+
   setTimestampIfNotPresent() {
     const timestamp = this.get(TIMESTAMP_KEY);
 
