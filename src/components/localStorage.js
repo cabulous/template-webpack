@@ -12,6 +12,7 @@ class LocalStorage {
    * @param {string} key
    */
   constructor(key) {
+    this.logger = getLogger();
     this.key = key;
     this.setTimestampIfNotPresent();
   }
@@ -126,21 +127,27 @@ class LocalStorage {
   }
 
   refresh() {
+    this.logger.log('[Local Storage] refresh');
     window.localStorage.removeItem(this.key);
-    this.set({ [TIMESTAMP_KEY]: +new Date() });
+    this.updateTimestamp();
   }
 
   cleanUp() {
     if (this.isExpired()) {
+      this.logger.log('[Local Storage] expired');
       this.refresh();
     }
+  }
+
+  updateTimestamp() {
+    this.set({ [TIMESTAMP_KEY]: +new Date() });
   }
 
   setTimestampIfNotPresent() {
     const timestamp = this.get(TIMESTAMP_KEY);
 
     if (is.nullOrUndefined(timestamp)) {
-      this.set({ [TIMESTAMP_KEY]: +new Date() });
+      this.updateTimestamp();
     }
   }
 }
