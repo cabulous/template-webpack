@@ -1,8 +1,6 @@
 /**
  * @typedef {Object} CountdownOptionTypes
  * @property {number | string | Date} date
- * @property {TimeUnitTextTypes} [timeUnitText]
- * @property {styleConstants} [style]
  * @property {number} [refresh]
  * @property {number} [offset]
  * @property {Function} [onEnd]
@@ -22,5 +20,16 @@
  * @property {number} min
  * @property {number} sec
  * @property {number} millisec
- *
+ */
+
+/**
+ * @typedef {Object} TimeNotationTypes
+ * @property {string} day
+ * @property {string} days
+ * @property {string} hour
+ * @property {string} hours
+ * @property {string} minute
+ * @property {string} minutes
+ * @property {string} second
+ * @property {string} seconds
  */

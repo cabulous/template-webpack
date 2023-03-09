@@ -3,7 +3,7 @@
  * @enum {string}
  */
 // eslint-disable-next-line import/prefer-default-export
-export const styleConstants = {
+export const stylerTypeConstants = {
   COLON: 'colon',
-  TEXT: 'time',
+  NOTATION: 'notation',
 };

@@ -1,16 +1,19 @@
+import { emptyElement } from '../../utils/elements';
 import is from '../../utils/is';
 import { getLogger } from '../logger';
-import countdownDefaults from './types/countdownDefaults';
+import countdownDefaults from './countdownDefaults';
 
 class Countdown {
 
   /**
-   * @param {HTMLElement} el - DOM node of the countdown
+   * @param {HTMLElement} element - DOM node of the countdown
+   * @param {PartManagerBase} partManager
    * @param {CountdownOptionTypes} options
    */
-  constructor(el, options) {
+  constructor(element, partManager, options) {
     this.logger = getLogger();
-    this.el = el;
+    this.el = element;
+    this.partManager = partManager;
 
     /**
      * @type {CountdownOptionTypes}
@@ -22,11 +25,6 @@ class Countdown {
      * @type {Boolean || Number}
      */
     this.interval = false;
-
-    this.classNames = {
-      digit: 'countdown__grid',
-      divider: 'countdown__divider',
-    };
 
     this.#mergeOptions(options);
     this.#init();
@@ -46,46 +44,6 @@ class Countdown {
       }, this.options.refresh);
     }
   };
-
-  /**
-   * @param {number} days
-   */
-  getUnitDays(days) {
-    if (days >= 2) {
-      return this.options.timeUnitText.days;
-    }
-    return this.options.timeUnitText.day;
-  }
-
-  /**
-   * @param {number} hours
-   */
-  getUnitHours(hours) {
-    if (hours >= 2) {
-      return this.options.timeUnitText.hours;
-    }
-    return this.options.timeUnitText.hour;
-  }
-
-  /**
-   * @param {number} mins
-   */
-  getUnitMins(mins) {
-    if (mins >= 2) {
-      return this.options.timeUnitText.minutes;
-    }
-    return this.options.timeUnitText.minute;
-  }
-
-  /**
-   * @param {number} secs
-   */
-  getUnitSecs(secs) {
-    if (secs >= 2) {
-      return this.options.timeUnitText.seconds;
-    }
-    return this.options.timeUnitText.second;
-  }
 
   /**
    * Get the difference between now and the end date
@@ -146,21 +104,6 @@ class Countdown {
   };
 
   /**
-   * Add leading zeros to a number
-   * @param  {Number} num    Input number
-   * @param  {Number} [length] Length of the desired output
-   * @return {String}        String of the desired length with leading zeros
-   */
-  static leadingZeros(num, length = 2) {
-    const digit = String(num);
-    if (digit.length >= length) {
-      return digit;
-    }
-    const str = Array(length + 1).join('0') + digit;
-    return str.substring(str.length - length);
-  };
-
-  /**
    * Merge default options and options into this.options
    * @param {CountdownOptionTypes} customOptions
    */
@@ -171,12 +114,10 @@ class Countdown {
     }
   };
 
-  /**
-   * @abstract
-   */
-  // eslint-disable-next-line class-methods-use-this
   render() {
-    throw new Error('Override this method in subclass');
+    emptyElement(this.el);
+    const data = this.getDiffDate();
+    this.el.append(...this.partManager.parts(data));
   };
 
   /**
